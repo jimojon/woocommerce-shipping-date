@@ -6,9 +6,15 @@ if(!defined('ABSPATH')){
 
 class Shipping_Date_Utils
 {
-    const PRODUCT_DATETIME_META_KEY = '_wc_shipping_date_datetime';
-    const PRODUCT_ENABLED_META_KEY = '_wc_shipping_date_enabled';
-    const ORDER_META_KEY = '_wc_shipping_date_datetime';
+    /*
+    UPDATE `wp_postmeta` SET meta_key = '_wsd_product_shipping_datetime' WHERE meta_key = '_wc_shipping_date_datetime';
+    UPDATE `wp_postmeta` SET meta_key = '_wsd_product_shipping_date_enabled' WHERE meta_key = '_wc_shipping_date_enabled';
+    UPDATE `wp_postmeta` SET meta_key = '_wsd_order_shipping_datetime' WHERE meta_key = '_wc_shipping_date_order_shipping_datetime';
+     */
+
+    const PRODUCT_DATETIME_META_KEY = '_wsd_product_shipping_datetime';
+    const PRODUCT_ENABLED_META_KEY = '_wsd_product_shipping_date_enabled';
+    const ORDER_META_KEY = '_wsd_order_shipping_datetime';
 
     /**
      * Return readable date
