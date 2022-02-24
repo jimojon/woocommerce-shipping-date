@@ -77,6 +77,8 @@ class WC_Shipping_Date_Emails {
             $shipping_date = Shipping_Date_Utils::format_date($datetime);
 
         $text = '';
+
+        // Intro
         if( 'page' === $version )
             if( !empty( $this->introText ) )
                 $text .= $this->introText.'<br><br>';
@@ -86,11 +88,17 @@ class WC_Shipping_Date_Emails {
         // Shippable
         if( $shippingInfos->isShippable() ) {
 
-            if( isset( $shipping_date ) && !empty( $this->shippingLaterText ) )
-                $text .= str_replace( '%SHIPPING_DATE%', $shipping_date, $this->shippingLaterText ).' ';
-            else if(!empty( $this->shippingReadyText ))
-                $text .= $this->shippingReadyText.' ';
+            // With shipping date
+            if ( isset( $shipping_date )) {
+                if( !empty( $this->shippingLaterText ) )
+                    $text .= str_replace( '%SHIPPING_DATE%', $shipping_date, $this->shippingLaterText ).' ';
 
+            // Without shipping date
+            } else if( !empty ( $this->shippingReadyText ) ) {
+                $text .= $this->shippingReadyText.' ';
+            }
+
+            // Common text
             if(!empty( $this->shippingCommonText ))
                 $text .= '<br/>'.$this->shippingCommonText.'<br/><br/>';
         }
@@ -100,6 +108,7 @@ class WC_Shipping_Date_Emails {
             $text .= $this->downloadText.'<br/><br/>';
         }
 
+        // Outro
         if( 'page' === $version && !empty( $this->outroText ) )
             $text .= $this->outroText;
 
