@@ -44,31 +44,4 @@ class Shipping_Date_Utils
         $order->add_meta_data(self::ORDER_META_KEY, $timestamp);
         $order->save();
     }
-
-    /**
-     * Return max shipping date
-     * @param array $items
-     * @return int
-     * @since 1.0
-     */
-    /*
-    static function max_shipping_date(array $items):int
-    {
-        $max_time_stamp = 0;
-
-        foreach($items as $item)
-        {
-            $product = $item['product_id'];
-            $product_can_be_ordered = WC_Shipping_Date_Product::product_can_be_pre_ordered($product);
-
-            if ($product_can_be_ordered) {
-                $availability_timestamp = WC_Shipping_Date_Product::get_localized_availability_datetime_timestamp($product);
-                if ($availability_timestamp > $max_time_stamp)
-                    $max_time_stamp = $availability_timestamp;
-            }
-        }
-
-        return $max_time_stamp;
-    }
-    */
 }
