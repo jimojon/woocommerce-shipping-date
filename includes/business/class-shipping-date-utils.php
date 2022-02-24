@@ -7,6 +7,7 @@ if(!defined('ABSPATH')){
 class Shipping_Date_Utils
 {
     /*
+    Upgrade from 0.2:
     UPDATE `wp_postmeta` SET meta_key = '_wsd_product_shipping_datetime' WHERE meta_key = '_wc_shipping_date_datetime';
     UPDATE `wp_postmeta` SET meta_key = '_wsd_product_shipping_date_enabled' WHERE meta_key = '_wc_shipping_date_enabled';
     UPDATE `wp_postmeta` SET meta_key = '_wsd_order_shipping_datetime' WHERE meta_key = '_wc_shipping_date_order_shipping_datetime';
