@@ -8,6 +8,7 @@ if(!defined( 'ABSPATH')){
  * Class WC_Shipping_Date_Admin_Settings_Messages
  *
  * TODO: put translations in languages/
+ * TODO: global shipping date
  *
  */
 class WC_Shipping_Date_Admin_Settings_Messages extends Admin_Settings
@@ -22,6 +23,7 @@ class WC_Shipping_Date_Admin_Settings_Messages extends Admin_Settings
      * Get all the settings for this plugin for @see woocommerce_admin_fields() function.
      *
      * @return array Array of settings for @see woocommerce_admin_fields() function.
+     * @return array Array of settings for @see woocommerce_admin_fields() function.
      */
     public function get_settings() {
 
@@ -31,45 +33,45 @@ class WC_Shipping_Date_Admin_Settings_Messages extends Admin_Settings
                 'name'      => __( 'Confirmation de commande', 'woocommerce-shipping-date' ),
                 'type'      => 'title',
                 'desc'      => '',
-                'id'        => 'wsd_confirm_section_title'
+                'id'        => 'wsd_order_received_section_title'
             ),
 
-            'confirm_intro' => array(
+            'intro' => array(
                 'name'      => __( 'Introduction', 'woocommerce-shipping-date' ),
                 'type'      => 'textarea',
                 'desc'      => __( 'Affiché sur la page de confirmation de commande seulement', 'woocommerce-shipping-date' ),
-                'id'        => 'wsd_confirm_intro'
+                'id'        => 'wsd_order_received_intro'
             ),
 
             'download_text' => array(
                 'name'      => __( 'Texte spécifique aux commandes avec téléchargements', 'woocommerce-shipping-date' ),
                 'type'      => 'textarea',
-                 'id'       => 'wsd_confirm_download_text'
+                 'id'       => 'wsd_order_received_download_text'
             ),
 
-            'shipping_date_text' => array(
+            'shipping_later_text' => array(
                 'name' => __( 'Texte spécifique aux commande AVEC date d\'expédition', 'woocommerce-shipping-date' ),
                 'type' => 'textarea',
-                'id'   => 'wsd_confirm_shipping_date_text'
+                'id'   => 'wsd_order_received_shipping_later_text'
             ),
 
             'shipping_ready_text' => array(
                 'name' => __( 'Texte spécifique aux commande SANS date d\'expédition', 'woocommerce-shipping-date' ),
                 'type' => 'textarea',
-                'id'   => 'wsd_confirm_shipping_ready_text'
+                'id'   => 'wsd_order_received_shipping_ready_text'
             ),
 
             'shipping_common_text' => array(
                 'name' => __( 'Texte commun aux commandes nécessitant une expéditions', 'woocommerce-shipping-date' ),
                 'type' => 'textarea',
-                'id'   => 'wsd_confirm_shipping_text'
+                'id'   => 'wsd_order_received_shipping_text'
             ),
 
-            'shipping_footer_text' => array(
+            'confirm_outro' => array(
                 'name' => __( 'Conclusion', 'woocommerce-shipping-date' ),
                 'type' => 'textarea',
                 'desc' => __( 'Affiché sur la page de confirmation de commande seulement', 'woocommerce-shipping-date' ),
-                'id'   => 'wsd_confirm_outro'
+                'id'   => 'wsd_order_received_outro'
             ),
 
             /**
