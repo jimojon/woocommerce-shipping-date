@@ -1,0 +1,20 @@
+.in-stock-with-warning {
+    color: #42a163;
+}
+
+.in-stock-with-warning a:link,
+.in-stock-with-warning a:visited,
+.in-stock-with-warning a:hover,
+.in-stock-with-warning a:active {
+    color: #42a163;
+    text-decoration: underline;
+}
+
+.in-stock-with-warning a:hover {
+    text-decoration: none;
+}
+
+.in-stock-with-warning::before {
+    content: "\f05a";
+}
+
