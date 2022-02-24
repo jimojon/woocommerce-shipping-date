@@ -20,7 +20,7 @@ class Shipping_Date_Utils
      * Return readable date
      * @param int $timestamp
      * @return string
-     * @since 1.0
+     * @since 0.1
      */
     static function format_date(int $timestamp):string
     {
@@ -31,7 +31,7 @@ class Shipping_Date_Utils
      * Return order shipping date
      * @param $order WC_Order
      * @return mixed
-     * @since 1.0
+     * @since 0.1
      */
     static function get_order_shipping_date_timestamp(WC_Order $order)
     {
@@ -43,7 +43,7 @@ class Shipping_Date_Utils
      * @param $order WC_Order
      * @param $timestamp int
      * @return void
-     * @since 1.0
+     * @since 0.1
      */
     static function add_order_shipping_date_timestamp(WC_Order $order, int $timestamp):void
     {

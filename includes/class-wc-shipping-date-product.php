@@ -9,14 +9,14 @@ if(!defined('ABSPATH')){
  *
  * Add shipping date functionality to products
  *
- * @since 1.0
+ * @since 0.1
  */
 class WC_Shipping_Date_Product {
 
 	/**
 	 * Adds needed hooks / filters
 	 *
-	 * @since 1.0
+	 * @since 0.1
 	 */
 	public function __construct() {
 
@@ -51,7 +51,7 @@ class WC_Shipping_Date_Product {
 	/**
 	 * Checks if a given product has a shipping date enabled
 	 *
-	 * @since 1.0
+	 * @since 0.1
 	 * @param object|int $product preferably the product object, or product ID if object is inconvenient to provide
 	 * @return bool true if product has an enabled shipping date, false otherwise
 	 */

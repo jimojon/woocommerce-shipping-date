@@ -37,7 +37,7 @@ define( 'WOOCOMMERCE_SHIPPING_DATE_VERSION', '0.2.1' );
 /**
  * Main Plugin Class
  *
- * @since 1.0
+ * @since 0.1
  */
 class WC_Shipping_Date {
 
