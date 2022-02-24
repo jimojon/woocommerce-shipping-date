@@ -4,7 +4,7 @@
  * Description: Define product shipping date in your WooCommerce store.
  * Author: Jonas
  * Author URI: https://positronic.fr
- * Version: 0.3.0
+ * Version: 0.3.1
  * Text Domain: woocommerce-shipping-date
  * Domain Path: /languages
  */
