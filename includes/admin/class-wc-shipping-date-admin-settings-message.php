@@ -52,6 +52,7 @@ class WC_Shipping_Date_Admin_Settings_Messages extends Admin_Settings
             'shipping_later_text' => array(
                 'name' => __( 'Texte spécifique aux commande AVEC date d\'expédition', 'woocommerce-shipping-date' ),
                 'type' => 'textarea',
+                'desc' => 'Affichez la date d\'expédition en utilisant la balise %SHIPPING_DATE%',
                 'id'   => 'wsd_order_received_shipping_later_text'
             ),
 
