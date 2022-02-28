@@ -29,13 +29,6 @@ class WC_Shipping_Date_Emails {
     {
         add_action('woocommerce_email_processing_text', array( $this, 'set_email_processing_text'), 10, 2);
         add_filter('woocommerce_thankyou_order_received_text', array( $this, 'set_thankyou_order_received_text'), 10, 2);
-
-        $this->introText = get_option('wsd_order_received_intro');
-        $this->downloadText = get_option('wsd_order_received_download_text');
-        $this->shippingLaterText = get_option('wsd_order_received_shipping_later_text');
-        $this->shippingReadyText = get_option('wsd_order_received_shipping_ready_text');
-        $this->shippingCommonText = get_option('wsd_order_received_shipping_text');
-        $this->outroText = get_option('wsd_order_received_outro');
     }
 
     /**
@@ -67,6 +60,15 @@ class WC_Shipping_Date_Emails {
     }
 
     private function getText(WC_Order $order, string $version, string $original_text = ''):string {
+
+        if( !isset( $this->introText ) ) {
+            $this->introText = get_option('wsd_order_received_intro');
+            $this->downloadText = get_option('wsd_order_received_download_text');
+            $this->shippingLaterText = get_option('wsd_order_received_shipping_later_text');
+            $this->shippingReadyText = get_option('wsd_order_received_shipping_ready_text');
+            $this->shippingCommonText = get_option('wsd_order_received_shipping_text');
+            $this->outroText = get_option('wsd_order_received_outro');
+        }
 
         $datetime = Shipping_Date_Utils::get_order_shipping_date_timestamp($order);
 
