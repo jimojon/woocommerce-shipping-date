@@ -27,19 +27,27 @@ class WC_Shipping_Date_Emails {
 	 */
 	public function __construct()
     {
-        add_action('woocommerce_email_processing_text', array( $this, 'set_email_processing_text'), 10, 2);
+        add_action('woocommerce_email_order_details', array( $this, 'set_email_processing_text'), 10, 4);
         add_filter('woocommerce_thankyou_order_received_text', array( $this, 'set_thankyou_order_received_text'), 10, 2);
     }
 
     /**
-     * @param $order
-     * @param $email
+     * @param $order WC_Order
+     * @param $sent_to_admin bool
+     * @param $plain_text bool
+     * @param $email string
      * @return void
-     * @since 0.1
+     * @since 0.3.2
      */
-    public function set_email_processing_text(WC_Order $order, $email)
+    public function set_email_processing_text(WC_Order $order, $sent_to_admin, $plain_text, $email)
     {
-        echo $this->getText($order, 'email');
+        if($sent_to_admin)
+            return;
+
+        if(isset($order))
+            echo $this->getText($order, 'email');
+        else
+            echo $email;
     }
 
     /**
