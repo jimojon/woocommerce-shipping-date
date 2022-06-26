@@ -58,19 +58,28 @@ class WC_Shipping_Date_Admin_Products {
 	public function save_product_tab_options( $post_id ) {
 
 		// Shipping date enabled
-		if ( isset( $_POST[Shipping_Date_Utils::PRODUCT_ENABLED_META_KEY] ) && 'yes' === $_POST[Shipping_Date_Utils::PRODUCT_ENABLED_META_KEY] ) {
-			update_post_meta( $post_id, Shipping_Date_Utils::PRODUCT_ENABLED_META_KEY, 'yes' );
+        $enabled = isset($_POST[Shipping_Date_Core::PRODUCT_ENABLED_META_KEY]) && 'yes' === $_POST[Shipping_Date_Core::PRODUCT_ENABLED_META_KEY];
+		if ( $enabled ) {
+			update_post_meta( $post_id, Shipping_Date_Core::PRODUCT_ENABLED_META_KEY, 'yes' );
 		} else {
-			update_post_meta( $post_id, Shipping_Date_Utils::PRODUCT_ENABLED_META_KEY, 'no' );
+			update_post_meta( $post_id, Shipping_Date_Core::PRODUCT_ENABLED_META_KEY, 'no' );
 		}
 
+        // Shipping date type
+        if ( isset( $_POST[Shipping_Date_Core::PRODUCT_SHIPPING_DATE_TYPE] ) ) {
+            $type = $_POST[Shipping_Date_Core::PRODUCT_SHIPPING_DATE_TYPE];
+            update_post_meta( $post_id, Shipping_Date_Core::PRODUCT_SHIPPING_DATE_TYPE, $type );
+        }
+
 		// Save the UTC shipping date/time.
-		if ( ! empty( $_POST[Shipping_Date_Utils::PRODUCT_DATETIME_META_KEY] ) ) {
+		if ( $type == Shipping_Date_Core::TYPE_DATE ) {
+		    if( empty( $_POST[Shipping_Date_Core::PRODUCT_DATETIME_META_KEY] ))
+		        $this->fatal_error('Missing date');
 
 			try {
 
 				// Get datetime object from site timezone.
-				$datetime = new DateTime( $_POST[Shipping_Date_Utils::PRODUCT_DATETIME_META_KEY], new DateTimeZone( WC_Shipping_Date_Product::get_wp_timezone_string() ) );
+				$datetime = new DateTime( $_POST[Shipping_Date_Core::PRODUCT_DATETIME_META_KEY], new DateTimeZone( Time_Utils::get_wp_timezone_string() ) );
 
 				// Get the unix timestamp (adjusted for the site's timezone already).
 				$timestamp = $datetime->format( 'U' );
@@ -81,7 +90,8 @@ class WC_Shipping_Date_Admin_Products {
 				}
 
 				// Save the shipping datetime.
-				update_post_meta( $post_id, Shipping_Date_Utils::PRODUCT_DATETIME_META_KEY, $timestamp );
+				update_post_meta( $post_id, Shipping_Date_Core::PRODUCT_DATETIME_META_KEY, $timestamp );
+                delete_post_meta( $post_id, Shipping_Date_Core::PRODUCT_DELAY);
 
 			} catch ( Exception $e ) {
 				global $woocommerce_shipping_date;
@@ -89,12 +99,29 @@ class WC_Shipping_Date_Admin_Products {
 				$woocommerce_shipping_date->log( $e->getMessage() ); //TODO
 			}
 
-		} else {
-			delete_post_meta( $post_id, Shipping_Date_Utils::PRODUCT_DATETIME_META_KEY);
+		} else if ( $type == Shipping_Date_Core::TYPE_DELAY ) {
+            $delay = $_POST[Shipping_Date_Core::PRODUCT_DELAY];
+            if( empty( $delay ))
+                $this->fatal_error('Missing delay');
+
+            update_post_meta( $post_id, Shipping_Date_Core::PRODUCT_DELAY, $delay );
+			delete_post_meta( $post_id, Shipping_Date_Core::PRODUCT_DATETIME_META_KEY);
 		}
 
-		do_action( Shipping_Date_Utils::PRODUCT_DATETIME_META_KEY, $post_id ); //TODO: usefull ? good hook name ?
+		do_action( Shipping_Date_Core::PRODUCT_DATETIME_META_KEY, $post_id ); //TODO: usefull ? good hook name ?
 	}
+
+	public function fatal_error( string $message ):void
+    {
+        wp_die(
+            $message,
+            'Une erreur est survenue',
+            array(
+                'response' => 500,
+                'back_link' => true
+            )
+        );
+    }
 }
 
 new WC_Shipping_Date_Admin_Products();

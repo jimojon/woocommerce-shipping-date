@@ -4,7 +4,7 @@ if(!defined('ABSPATH')){
     exit; // Exit if accessed directly
 }
 
-class Shipping_Date_Utils
+class Shipping_Date_Core
 {
     /*
     Upgrade from 0.2:
@@ -13,9 +13,16 @@ class Shipping_Date_Utils
     UPDATE `wp_postmeta` SET meta_key = '_wsd_order_shipping_datetime' WHERE meta_key = '_wc_shipping_date_order_shipping_datetime';
      */
 
+    const PRODUCT_SHIPPING_DATE_TYPE = '_wsd_product_shipping_type';
     const PRODUCT_DATETIME_META_KEY = '_wsd_product_shipping_datetime';
     const PRODUCT_ENABLED_META_KEY = '_wsd_product_shipping_date_enabled';
     const ORDER_META_KEY = '_wsd_order_shipping_datetime';
+
+    const PRODUCT_DELAY = '_wsd_product_shipping_delay';
+
+    const TYPE_DATE = 'date';
+    const TYPE_DELAY = 'delay';
+
 
     /**
      * Return readable date
@@ -23,9 +30,12 @@ class Shipping_Date_Utils
      * @return string
      * @since 0.1
      */
-    static function format_date(int $timestamp):string
+    static function get_type_options():array
     {
-        return date_i18n( wc_date_format(), $timestamp );
+        return  array(
+            self::TYPE_DATE => 'Date d\'expédition',
+            self::TYPE_DELAY => 'Délai d\'expédition'
+        );
     }
 
     /**
@@ -50,5 +60,17 @@ class Shipping_Date_Utils
     {
         $order->add_meta_data(self::ORDER_META_KEY, $timestamp);
         $order->save();
+    }
+
+    /**
+     * Return timestamp
+     * @param int $timestamp
+     * @return string
+     * @since 0.3.3
+     */
+    static function calculate_timestamp( int $num_days ):int {
+        $now = new DateTime( Time_Utils::get_wp_timezone_string() );
+        $ms = $num_days * 24 * 60 * 60;
+        return $now->getTimestamp() + $ms;
     }
 }

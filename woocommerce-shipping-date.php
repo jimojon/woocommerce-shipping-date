@@ -2,15 +2,19 @@
 /**
  * Plugin Name: WooCommerce Shipping Date
  * Description: Define product shipping date in your WooCommerce store.
- * Author: Jonas
+ * Author: Jonas Monnier
  * Author URI: https://positronic.fr
- * Version: 0.3.2
+ * Version: 0.3.3
  * Text Domain: woocommerce-shipping-date
  * Domain Path: /languages
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+if ( ! defined( 'WSD_VERSION' ) ) {
+    define( 'WSD_VERSION', '0.3.3' );
 }
 
 if( !function_exists('is_woocommerce_active') ){
@@ -32,8 +36,6 @@ if ( ! is_woocommerce_active() ) {
  */
 $GLOBALS['woocommerce-shipping-date'] = new WC_Shipping_Date();
 
-define( 'WOOCOMMERCE_SHIPPING_DATE_VERSION', '0.2.1' );
-
 /**
  * Main Plugin Class
  *
@@ -54,7 +56,8 @@ class WC_Shipping_Date {
 
 		// load classes that require WC to be loaded
 		add_action( 'woocommerce_init', array( $this, 'init' ) );
-        add_action( 'wp_enqueue_scripts', array( $this, 'load_plugin_css' ));
+        add_action( 'wp_enqueue_scripts', array( $this, 'load_plugin_front_assets' ));
+        add_action( 'admin_enqueue_scripts', array( $this, 'load_plugin_admin_assets' ) );
 	}
 
 	/**
@@ -66,10 +69,11 @@ class WC_Shipping_Date {
     {
         // Load framework
         require( 'includes/framework/class-admin-settings.php' );
+        require( 'includes/framework/class-time-utils.php' );
 
         // Load business classes
         require( 'includes/business/class-shipping-infos.php' );
-        require( 'includes/business/class-shipping-date-utils.php' );
+        require( 'includes/business/class-shipping-date-core.php' );
 
         // Load email customizations / overrides
         require( 'includes/class-wc-shipping-date-emails.php' );
@@ -103,9 +107,19 @@ class WC_Shipping_Date {
      *
      * @since 0.2.1
      */
-    public function load_plugin_css()
+    public function load_plugin_front_assets()
     {
-        wp_enqueue_style( 'front', plugin_dir_url( __FILE__ ) . 'assets/css/front.css' );
+        wp_enqueue_style( 'wsd_front', plugin_dir_url( __FILE__ ) . 'assets/css/wsd_front.css', WSD_VERSION);
+    }
+
+    /**
+     * Load plugin css
+     *
+     * @since 0.3.3
+     */
+    public function load_plugin_admin_assets()
+    {
+        wp_enqueue_script( 'wsd_backend', plugin_dir_url( __FILE__ ) . 'assets/js/wsd_backend.js', array( 'jquery' ), WSD_VERSION, true );
     }
 
     /**

@@ -78,13 +78,13 @@ class WC_Shipping_Date_Emails {
             $this->outroText = get_option('wsd_order_received_outro');
         }
 
-        $datetime = Shipping_Date_Utils::get_order_shipping_date_timestamp($order);
+        $datetime = Shipping_Date_Core::get_order_shipping_date_timestamp( $order );
 
-        $shippingInfos = new Shipping_Infos($order);
+        $shippingInfos = new Shipping_Infos( $order );
 
         $shipping_date = null;
-        if( !empty( $datetime ) )
-            $shipping_date = Shipping_Date_Utils::format_date($datetime);
+        if( ! empty ( $datetime ) && $datetime != 0 )
+            $shipping_date = Time_Utils::format_date( $datetime );
 
         $text = '';
 

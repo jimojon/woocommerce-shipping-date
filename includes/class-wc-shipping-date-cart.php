@@ -33,10 +33,26 @@ class WC_Shipping_Date_Cart {
      * @param $order WC_Order
      * @param $data
      */
-    function before_checkout_create_order( $order, $data )
+    function before_checkout_create_order( WC_Order $order, $data )
     {
         if(self::cart_contains_shipping_date())
-            Shipping_Date_Utils::add_order_shipping_date_timestamp($order, self::get_max_shipping_date_in_cart());
+        {
+            // Store shipping date in order metadata
+            Shipping_Date_Core::add_order_shipping_date_timestamp($order, self::get_max_shipping_date_in_cart());
+
+            // Store shipping date in order items metadata
+            $items = $order->get_items();
+            foreach( $items as $item_id => $item ) {
+                $product = $item->get_product();
+                $timestamp = WC_Shipping_Date_Product::get_product_shipping_timestamp($product);
+                $type = WC_Shipping_Date_Product::get_product_shipping_type($product);
+                $item->add_meta_data('_wsd_shipping_date', $timestamp);
+                $item->add_meta_data('_wsd_shipping_date_type', $type);
+                if($type == Shipping_Date_Core::TYPE_DELAY)
+                    $item->add_meta_data('_wsd_shipping_delay', $type);
+                $item->save();
+            }
+        }
     }
 
     /**
@@ -58,7 +74,7 @@ class WC_Shipping_Date_Cart {
         if($max_shipping_date_timestamp <= time() )
             return;
 
-        $date = Shipping_Date_Utils::format_date($max_shipping_date_timestamp); //1572822000
+        $date = Time_Utils::format_date($max_shipping_date_timestamp); //1572822000
 
         echo '<br><strong><p style="color: #0f834d">'.__('Shipping from', 'woocommerce-shipping-date').' '.$date.'</p></strong>';
     }
@@ -89,12 +105,12 @@ class WC_Shipping_Date_Cart {
             $product = wc_get_product($product);
         }
 
-        $timestamp = WC_Shipping_Date_Product::get_localized_shipping_datetime_timestamp($product);
+        $timestamp = WC_Shipping_Date_Product::get_product_shipping_timestamp($product);
         if($timestamp !== 0 && $timestamp >= time())
         {
             $order_meta = apply_filters( 'woocommerce_shipping_date_cart_item_meta', array(
                 'name'    => $name,
-                'display' => Shipping_Date_Utils::format_date($timestamp),
+                'display' => Time_Utils::format_date($timestamp),
             ), $cart_item );
 
             // add title and localized date
@@ -122,10 +138,12 @@ class WC_Shipping_Date_Cart {
             foreach($woocommerce->cart->cart_contents as $cart_item){
 
                 $product = $cart_item['product_id'];
+                if( ! is_object( $product ) )
+                    $product = wc_get_product($product);
                 $product_has_shipping_date = WC_Shipping_Date_Product::product_has_shipping_date($product);
 
                 if($product_has_shipping_date){
-                    $shipping_timestamp = WC_Shipping_Date_Product::get_localized_shipping_datetime_timestamp($product);
+                    $shipping_timestamp = WC_Shipping_Date_Product::get_product_shipping_timestamp($product);
                     if($shipping_timestamp > $max_time_stamp)
                         $max_time_stamp = $shipping_timestamp;
                 }
@@ -151,7 +169,11 @@ class WC_Shipping_Date_Cart {
 
 			foreach ( $woocommerce->cart->cart_contents as $cart_item ) {
 
-				if ( WC_Shipping_Date_Product::product_has_shipping_date( $cart_item['product_id'] ) ) {
+                $product = $cart_item['product_id'];
+                if( ! is_object( $product ) )
+                    $product = wc_get_product($product);
+
+				if ( WC_Shipping_Date_Product::product_has_shipping_date( $product ) ) {
 
 					$contains_shipping_date = true;
 					break;
