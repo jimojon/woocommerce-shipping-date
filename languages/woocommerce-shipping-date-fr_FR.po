@@ -26,3 +26,6 @@ msgstr "Expédition à partir du"
 
 msgid "Activate shipping date"
 msgstr "Activer la date d'expédition"
+
+msgid "Show order confirmation page"
+msgstr "Voir la page de confirmation de commande"

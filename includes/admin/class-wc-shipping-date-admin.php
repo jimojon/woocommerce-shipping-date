@@ -22,6 +22,7 @@ class WC_Shipping_Date_Admin
     {
         require_once 'class-wc-shipping-date-admin-settings-message.php';
         require_once 'class-wc-shipping-date-admin-product.php';
+        require_once 'class-wc-shipping-date-admin-order.php';
     }
 }
 
