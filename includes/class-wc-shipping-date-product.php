@@ -138,7 +138,6 @@ class WC_Shipping_Date_Product {
             $product = wc_get_product( $product );
 
         $productId = $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id();
-        $type = get_post_meta( $productId, Shipping_Date_Core::PRODUCT_SHIPPING_DATE_TYPE, true );
-        return $type;
+        return get_post_meta( $productId, Shipping_Date_Core::PRODUCT_DELAY, true );
     }
 }
